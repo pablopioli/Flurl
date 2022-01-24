@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flurl", "src\Flurl\Flurl.csproj", "{117B6C6E-53F9-45AE-9439-F4FB7E21B116}"
 EndProject
@@ -29,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{B6BF9238
 		Build\test.sh = Build\test.sh
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackageTester.net461", "PackageTesters\PackageTester.net461\PackageTester.net461.csproj", "{1C17F6CB-6AD2-488A-9747-DE0EDD6F401D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackageTester.net472", "PackageTesters\PackageTester.net461\PackageTester.net472.csproj", "{1C17F6CB-6AD2-488A-9747-DE0EDD6F401D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackageTester.netcore2", "PackageTesters\PackageTester.netcore2\PackageTester.netcore2.csproj", "{7D891924-DC5A-4EBD-945E-29F3765BF08F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackageTester.netcore21", "PackageTesters\PackageTester.netcore2\PackageTester.netcore21.csproj", "{7D891924-DC5A-4EBD-945E-29F3765BF08F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Flurl.CodeGen", "src\Flurl.CodeGen\Flurl.CodeGen.csproj", "{BE943E04-705F-42B1-BF95-A0642D9CA51D}"
 EndProject
