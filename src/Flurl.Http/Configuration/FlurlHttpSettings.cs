@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Flurl.Http.Testing;
 
 namespace Flurl.Http.Configuration
@@ -152,7 +152,7 @@ namespace Flurl.Http.Configuration
 		/// <summary>
 		/// Gets a settings value from this instance if explicitly set, otherwise from the default settings that back this instance.
 		/// </summary>
-		internal T Get<T>([CallerMemberName]string propName = null) {
+		internal T Get<T>([CallerMemberName] string propName = null) {
 			var testVals = HttpTest.Current?.Settings._vals;
 			return
 				testVals?.ContainsKey(propName) == true ? (T)testVals[propName] :
@@ -164,7 +164,7 @@ namespace Flurl.Http.Configuration
 		/// <summary>
 		/// Sets a settings value for this instance.
 		/// </summary>
-		internal void Set<T>(T value, [CallerMemberName]string propName = null) {
+		internal void Set<T>(T value, [CallerMemberName] string propName = null) {
 			_vals[propName] = value;
 		}
 	}
@@ -227,7 +227,6 @@ namespace Flurl.Http.Configuration
 		public override void ResetDefaults() {
 			base.ResetDefaults();
 			Timeout = TimeSpan.FromSeconds(100); // same as HttpClient
-			JsonSerializer = new NewtonsoftJsonSerializer(null);
 			UrlEncodedSerializer = new DefaultUrlEncodedSerializer();
 			FlurlClientFactory = new DefaultFlurlClientFactory();
 			HttpClientFactory = new DefaultHttpClientFactory();

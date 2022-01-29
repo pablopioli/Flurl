@@ -118,7 +118,7 @@ namespace Flurl.Test.Http
 
 			GetSettings().ResetDefaults();
 
-			Assert.That(GetSettings().JsonSerializer is NewtonsoftJsonSerializer);
+			//Assert.That(GetSettings().JsonSerializer is NewtonsoftJsonSerializer);
 			Assert.IsTrue(GetSettings().Redirects.Enabled);
 			Assert.IsNull(GetSettings().BeforeCall);
 			Assert.AreEqual(10, GetSettings().Redirects.MaxAutoRedirects);

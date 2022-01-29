@@ -1,47 +1,23 @@
-# Flurl
+# Flurl.Http without dependencies
 
-[![Build status](https://ci.appveyor.com/api/projects/status/hec8ioqg0j07ttg5/branch/master?svg=true)](https://ci.appveyor.com/project/kroniak/flurl/branch/master)
-[![Flurl-stable](https://img.shields.io/nuget/v/Flurl.svg?maxAge=3600&label=Flurl%20nuget)](https://www.nuget.org/packages/Flurl/)
-[![Flurl.Http-stable](https://img.shields.io/nuget/v/Flurl.Http.svg?maxAge=3600&label=Flurl.Http%20nuget)](https://www.nuget.org/packages/Flurl.Http/)
-[![Flurl-pre-release](https://img.shields.io/nuget/vpre/Flurl.svg?maxAge=3600&label=Flurl%20Pre-Release%20nuget)](https://www.nuget.org/packages/Flurl/)
-[![Flurl.Http-pre-release](https://img.shields.io/nuget/vpre/Flurl.Http.svg?maxAge=3600&label=Flurl.Http%20Pre-Release%20nuget)](https://www.nuget.org/packages/Flurl.Http/)
+This is a fork of Flurl (https://github.com/tmenier/Flurl) with only one change. The default serializer is removed.
 
-Flurl is a modern, fluent, asynchronous, testable, portable, buzzword-laden URL builder and HTTP client library.
+Flurl.Http includes a dependency on Newtonsoft.Json as it's used as the default Json serializer.
 
-````c#
-var result = await "https://api.mysite.com"
-    .AppendPathSegment("person")
-    .SetQueryParams(new { api_key = "xyz" })
-    .WithOAuthBearerToken("my_oauth_token")
-    .PostJsonAsync(new { first_name = firstName, last_name = lastName })
-    .ReceiveJson<T>();
+Although you can change the serializer the dependency will remain. In constrained environments as Blazor you end downloading a big file you don’t need.
 
-[Test]
-public void Can_Create_Person() {
-    // fake & record all http calls in the test subject
-    using (var httpTest = new HttpTest()) {
-        // arrange
-        httpTest.RespondWith("OK", 200);
+So this library is tracking the official repository of Flurl.Http and repacks it without the dependency. You should make no changes in your code replacing the official library with this one.
 
-        // act
-        await sut.CreatePersonAsync("Claire", "Underwood");
-        
-        // assert
-        httpTest.ShouldHaveCalled("http://api.mysite.com/*")
-            .WithVerb(HttpMethod.Post)
-            .WithContentType("application/json");
-    }
-}
-````
+## Warning !!!
 
-Get it on NuGet:
+As there are now no default serializer your code WILL FAIL on runtime if you don’t configure any Json serializer. See in the samples how to use
 
-`PM> Install-Package Flurl.Http`
+* System.Text.Json: https://github.com/pablopioli/Flurl/blob/Samples/TextJson/Program.cs
+* Jil: https://github.com/pablopioli/Flurl/blob/Samples/JilSample/Program.cs
 
-Or get just the stand-alone URL builder without the HTTP features:
+For additional information about Jil see https://github.com/kevin-montrose/Jil
 
-`PM> Install-Package Flurl`
 
-For updates and announcements, [follow @FlurlHttp on Twitter](https://twitter.com/intent/user?screen_name=FlurlHttp).
+## Get it on NuGet:
 
-For detailed documentation, please visit the [main site](https://flurl.dev). 
+`PM> Install-Package Flurl.Http.NoDependencies`
