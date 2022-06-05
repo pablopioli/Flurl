@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Flurl.Http;
 using Flurl.Http.Testing;
@@ -35,13 +36,34 @@ namespace Flurl.Test.Http
 		}
 
 		[Test]
-		public async Task no_response_setup_returns_empty_reponse() {
+		public async Task no_response_setup_returns_empty_response() {
 			await "http://www.api.com".GetAsync();
 
 			var lastCall = HttpTest.CallLog.Last();
 			Assert.AreEqual(200, lastCall.Response.StatusCode);
 			Assert.AreEqual("", await lastCall.Response.GetStringAsync());
 		}
+
+		[Test] // #606
+		public async Task null_response_setup_returns_empty_response() {
+			HttpTest
+				.RespondWith(status: 200)
+				.RespondWith((string)null, status: 200)
+				.RespondWith(() => null, status: 200);
+
+			var s = await "https://api.com".GetStringAsync();
+			Assert.AreEqual("", s);
+
+			s = await "https://api.com".GetStringAsync();
+			Assert.AreEqual("", s);
+
+			// in the last scenario, the whole HttpContent is null
+			var resp = await "https://api.com".PostAsync();
+			Assert.IsNull(resp.ResponseMessage.Content);
+			s = await resp.GetStringAsync(); // ...but even in this case we should get an empty string here
+			Assert.AreEqual("", s);
+		}
+
 
 		[Test]
 		public async Task can_setup_multiple_responses() {
@@ -361,16 +383,39 @@ namespace Flurl.Test.Http
 			}
 		}
 
-	    [Test]
+		[Test]
+		public async Task can_simulate_exception() {
+			var expectedException = new SocketException();
+			HttpTest.SimulateException(expectedException);
+			try {
+				await "http://www.api.com".GetAsync();
+				Assert.Fail("Exception was not thrown!");
+			}
+			catch (FlurlHttpException ex) {
+				Assert.AreEqual(expectedException, ex.InnerException);
+			}
+		}
+
+		[Test]
 	    public async Task can_simulate_timeout_with_exception_handled() {
 	        HttpTest.SimulateTimeout();
-	        var result = await "http://www.api.com"
-	            .ConfigureRequest(c => c.OnError = call => call.ExceptionHandled = true)
-	            .GetAsync();
-	        Assert.IsNull(result);
-	    }
+	        var exceptionCaught = false;
 
-	    [Test]
+	        var resp = await "http://api.com"
+		        .ConfigureRequest(c => c.OnError = call => {
+			        exceptionCaught = true;
+			        var ex = call.Exception as TaskCanceledException;
+			        Assert.NotNull(ex);
+			        Assert.IsInstanceOf<TimeoutException>(ex.InnerException);
+			        call.ExceptionHandled = true;
+		        })
+		        .GetAsync();
+
+	        Assert.IsNull(resp);
+	        Assert.IsTrue(exceptionCaught);
+		}
+
+		[Test]
 		public async Task can_fake_headers() {
 			HttpTest.RespondWith(headers: new { h1 = "foo" });
 
@@ -430,7 +475,7 @@ namespace Flurl.Test.Http
 				CallAndAssertCountAsync(6));
 		}
 
-		[Test]
+		[Test] // #285
 		public async Task does_not_throw_nullref_for_empty_content() {
 			await "http://some-api.com".AppendPathSegment("foo").SendAsync(HttpMethod.Post, null);
 			await "http://some-api.com".AppendPathSegment("foo").PostJsonAsync(new { foo = "bar" });
