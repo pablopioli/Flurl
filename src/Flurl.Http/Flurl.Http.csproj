@@ -2,14 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461;net472</TargetFrameworks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>Flurl.Http</PackageId>
+    <PackageId>Flurl.Http.NoDependencies </PackageId>
     <Version>3.2.4</Version>
     <Authors>Todd Menier</Authors>
-    <Description>A fluent, portable, testable HTTP client library.</Description>
+	<Description>This is a repackaged version of Flurl.Http without additional dependencies. See https://github.com/pablopioli/Flurl for details.</Description>
     <PackageProjectUrl>https://flurl.dev</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl>https://pbs.twimg.com/profile_images/534024476296376320/IuPGZ_bX_400x400.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/tmenier/Flurl.git</RepositoryUrl>
+	<RepositoryUrl>https://github.com/pablopioli/Flurl</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>rest http httpclient json url uri tdd</PackageTags>
